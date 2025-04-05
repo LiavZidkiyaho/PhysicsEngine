@@ -64,3 +64,13 @@ bool Body::CreateBox(float width, float height, Vector2 position, float density,
     body = new Body(position, density, density * area, restitution, area, isStatic, 0.0f, width, height, BodyType::Box);
     return true;
 }
+
+void Body::Move(Vector2 amount)
+{
+    this->position += amount;
+}
+
+void Body::MoveTo(Vector2 position)
+{
+    this->position = position;
+}

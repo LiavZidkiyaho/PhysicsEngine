@@ -39,6 +39,9 @@ public:
 
     bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
     bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+
+    void Move(Vector2 amount);
+    void MoveTo(Vector2 position);
 };
 
 

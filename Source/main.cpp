@@ -3,6 +3,9 @@
 #include "Vector2.h"
 #include "Body.h"
 #include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 void DrawVector(const Vector2& v, float originX, float originY) {
     glBegin(GL_LINES);
@@ -17,7 +20,7 @@ void DrawCircle(const Body* body) {
     float radius = body->radius;
     Vector2 position = body->position;
 
-    glBegin(GL_LINE_LOOP);
+    glBegin(GL_POLYGON); // Filled circle
     for (int i = 0; i < 360; ++i) {
         float theta = i * 3.14159f / 180.0f;
         float x = radius * cosf(theta);
@@ -66,54 +69,36 @@ int main() {
         return -1;
     }
 
-    // Define vectors
-    Vector2 v1(0.5f, 0.75f);
-    Vector2 v2(1.0f, 0.5f);
-    Vector2 v3(1.50f, 0.25f);
+    // Seed random number generator
+    std::srand(std::time(0));
 
-    // Print vector info
-    std::cout << "v1 Length: " << Vector2::Length(v1) << std::endl;
-    std::cout << "v2 Length: " << Vector2::Length(v2) << std::endl;
-    std::cout << "v3 Length: " << Vector2::Length(v3) << std::endl;
+    // Create a vector of circles with random positions and random colors
+    std::vector<Body*> circles;
+    std::vector<Vector2> randomColors;
 
-    std::cout << "Distance between v1 and v2: " << Vector2::Distance(v1, v2) << std::endl;
-    std::cout << "Distance between v2 and v3: " << Vector2::Distance(v2, v3) << std::endl;
-    std::cout << "Distance between v1 and v3: " << Vector2::Distance(v1, v3) << std::endl;
+    for (int i = 0; i < 10; ++i) {
+        float radius = 0.2f;
+        Vector2 position((std::rand() % 400) / 100.0f - 2.0f, (std::rand() % 400) / 100.0f - 2.0f);  // Random position
+        float density = 2.0f;
+        bool isStatic = false;
+        float restitution = 0.6f;
+        std::string errorMsg;
 
-    std::cout << "Dot product of v1 and v2: " << Vector2::Dot(v1, v2) << std::endl;
-    std::cout << "Dot product of v2 and v3: " << Vector2::Dot(v2, v3) << std::endl;
-    std::cout << "Dot product of v1 and v3: " << Vector2::Dot(v1, v3) << std::endl;
-
-    std::cout << "Cross product of v1 and v2: " << Vector2::Cross(v1, v2) << std::endl;
-    std::cout << "Cross product of v2 and v3: " << Vector2::Cross(v2, v3) << std::endl;
-    std::cout << "Cross product of v1 and v3: " << Vector2::Cross(v1, v3) << std::endl;
-
-    Vector2 v1Normalized = v1.Normalize();
-    Vector2 v2Normalized = v2.Normalize();
-    Vector2 v3Normalized = v3.Normalize();
-    std::cout << "Normalized v1: (" << v1Normalized.GetX() << ", " << v1Normalized.GetY() << ")" << std::endl;
-    std::cout << "Normalized v2: (" << v2Normalized.GetX() << ", " << v2Normalized.GetY() << ")" << std::endl;
-    std::cout << "Normalized v3: (" << v3Normalized.GetX() << ", " << v3Normalized.GetY() << ")" << std::endl;
-
-    // Create Body objects
-    Body* circleBody = nullptr;
-    Body* boxBody = nullptr;
-    std::string errorMsg;
-
-    Body bodyInstance;
-
-    // Create circle and box with proper values
-    if (bodyInstance.CreateCircle(0.5f, Vector2(0.5f, 0.5f), 2.0f, false, 0.6f, circleBody, errorMsg)) {
-        std::cout << "Circle body created successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to create circle body: " << errorMsg << std::endl;
+        Body* circle = nullptr;
+        if (circle == nullptr) {
+            Body bodyInstance;
+            if (bodyInstance.CreateCircle(radius, position, density, isStatic, restitution, circle, errorMsg)) {
+                circles.push_back(circle);
+                // Generate random colors for each circle
+                randomColors.push_back(Vector2((std::rand() % 256) / 255.0f, (std::rand() % 256) / 255.0f));
+            } else {
+                std::cerr << "Failed to create circle body: " << errorMsg << std::endl;
+            }
+        }
     }
 
-    if (bodyInstance.CreateBox(1.0f, 0.5f, Vector2(-1.0f, -1.0f), 1.5f, false, 0.4f, boxBody, errorMsg)) {
-        std::cout << "Box body created successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to create box body: " << errorMsg << std::endl;
-    }
+    // Variable to track which circle is selected
+    int selectedCircleIndex = 0;
 
     // Main render loop
     while (!glfwWindowShouldClose(window)) {
@@ -136,20 +121,43 @@ int main() {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        // Draw vectors
-        glColor3f(1.0f, 0.0f, 0.0f);
-        DrawVector(v1, 0.0f, 0.0f);
+        // === Move selected circle with arrow keys ===
+        if (!circles.empty()) {
+            Body* selected = circles[selectedCircleIndex];
+            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                selected->position = selected->position + Vector2(-0.01f, 0.0f);
+            }
+            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                selected->position = selected->position + Vector2(0.01f, 0.0f);
+            }
+            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+                selected->position = selected->position + Vector2(0.0f, 0.01f);
+            }
+            if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                selected->position = selected->position + Vector2(0.0f, -0.01f);
+            }
+        }
 
-        glColor3f(0.0f, 1.0f, 0.0f);
-        DrawVector(v2, 0.0f, 0.0f);
+        // Optional: Switch between circles using TAB key
+        static bool tabPressedLastFrame = false;
+        bool tabPressedNow = glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS;
 
-        glColor3f(0.0f, 0.0f, 1.0f);
-        DrawVector(v3, 0.0f, 0.0f);
+        if (tabPressedNow && !tabPressedLastFrame) {
+            selectedCircleIndex = (selectedCircleIndex + 1) % circles.size();
+        }
+        tabPressedLastFrame = tabPressedNow;
 
-        // Draw shapes
-        glColor3f(1.0f, 1.0f, 1.0f);
-        DrawCircle(circleBody);
-        DrawBox(boxBody);
+        // === Draw circles with random colors ===
+        for (size_t i = 0; i < circles.size(); ++i) {
+            Body* circle = circles[i];
+            Vector2 color = randomColors[i];
+
+            // Set color
+            glColor3f(color.GetX(), color.GetY(), 1.0f - color.GetY());  // R, G, B variation
+
+            // Draw circle
+            DrawCircle(circle);
+        }
 
         // Swap buffers
         glfwSwapBuffers(window);
@@ -157,8 +165,9 @@ int main() {
     }
 
     // Clean up
-    delete circleBody;
-    delete boxBody;
+    for (auto circle : circles) {
+        delete circle;
+    }
 
     glfwDestroyWindow(window);
     glfwTerminate();

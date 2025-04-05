@@ -55562,6 +55562,7 @@ public:
     Vector2 operator-(const Vector2& other) const;
     Vector2 operator*(float scalar) const;
     Vector2 operator/(float scalar) const;
+    Vector2 operator+=(const Vector2& other);
 
 
     static float Length(const Vector2& v);
@@ -55604,6 +55605,12 @@ Vector2 Vector2::operator/(float scalar) const {
     return Vector2(x / scalar, y / scalar);
 }
 
+Vector2 Vector2::operator+=(const Vector2& other)
+{
+    this->x += other.x;
+    this->y += other.y;
+    return *this;
+}
 
 
 

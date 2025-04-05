@@ -55565,6 +55565,7 @@ public:
     Vector2 operator-(const Vector2& other) const;
     Vector2 operator*(float scalar) const;
     Vector2 operator/(float scalar) const;
+    Vector2 operator+=(const Vector2& other);
 
 
     static float Length(const Vector2& v);
@@ -55622,6 +55623,9 @@ public:
 
     bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
     bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+
+    void Move(Vector2 amount);
+    void MoveTo(Vector2 position);
 };
 # 2 "E:/PhysicsEngine/Source/Body.cpp" 2
 # 1 "E:/PhysicsEngine/Include/World.h" 1
@@ -55701,4 +55705,14 @@ bool Body::CreateBox(float width, float height, Vector2 position, float density,
 
     body = new Body(position, density, density * area, restitution, area, isStatic, 0.0f, width, height, BodyType::Box);
     return true;
+}
+
+void Body::Move(Vector2 amount)
+{
+    this->position += amount;
+}
+
+void Body::MoveTo(Vector2 position)
+{
+    this->position = position;
 }

@@ -3,4 +3,4 @@ project(PhysicsEngine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(PhysicsEngine main.cpp)
+add_executable(PhysicsEngine Source/main.cpp)

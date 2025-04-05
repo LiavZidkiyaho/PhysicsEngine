@@ -13,7 +13,9 @@
 	"forward-modules-from-target-dirs" : [],
 	"include-dirs" : 
 	[
-		"E:\\PhysicsEngine\\Include"
+		"E:\\PhysicsEngine\\Include",
+		"E:\\PhysicsEngine\\Lib\\GL",
+		"E:\\PhysicsEngine\\Lib\\GLFW"
 	],
 	"language" : "CXX",
 	"linked-target-dirs" : [],

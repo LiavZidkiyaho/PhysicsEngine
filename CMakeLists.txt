@@ -3,14 +3,18 @@ project(PhysicsEngine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Set the output directory for the executable
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+include_directories(${CMAKE_SOURCE_DIR}/Include)
+include_directories(${CMAKE_SOURCE_DIR}/Lib/GL)
+include_directories(${CMAKE_SOURCE_DIR}/Lib/GLFW)
 
-# Add include directories
-include_directories(Include)
-
-# Add source files
 add_executable(PhysicsEngine
         Source/main.cpp
-        Source/Vector2.cpp
+        Include/Vector2.h
+        Source/Vector2.cpp)
+
+# Link full path to the .a or .lib files
+target_link_libraries(PhysicsEngine
+        ${CMAKE_SOURCE_DIR}/Lib/glew-2.1.0/lib/Release/x64/glew32.lib
+        ${CMAKE_SOURCE_DIR}/Lib/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
+        opengl32
 )

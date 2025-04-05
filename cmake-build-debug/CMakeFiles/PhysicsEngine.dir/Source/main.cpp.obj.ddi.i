@@ -63425,14 +63425,92 @@ public:
 
     void SetX(float x);
     void SetY(float y);
+
+    static float Clamp(float value, float min, float max);
 };
 # 4 "E:/PhysicsEngine/Source/main.cpp" 2
+# 1 "E:/PhysicsEngine/Include/Body.h" 1
+
+
+# 1 "E:/PhysicsEngine/Include/Vector2.h" 1
+# 4 "E:/PhysicsEngine/Include/Body.h" 2
+
+enum BodyType {
+    Circle = 0,
+    Box = 1
+};
+
+class Body
+{
+private:
+
+    Vector2 linearVelocity;
+    float rotation;
+    float rotationalVelocity;
+
+
+    Body(Vector2 position, float density, float mass, float restitution, float area, bool isStatic, float radius, float width, float height, BodyType bodyType);
+
+public:
+
+    Body() = default;
+
+    Vector2 position;
+
+    float density;
+    float mass;
+    float restitution;
+    float area;
+
+     bool isStatic;
+
+    float radius;
+    float width;
+    float height;
+
+    BodyType bodyType;
+
+    bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+    bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+};
+# 5 "E:/PhysicsEngine/Source/main.cpp" 2
 
 
 void DrawVector(const Vector2& v, float originX, float originY) {
     glBegin(0x0001);
     glVertex2f(originX, originY);
     glVertex2f(originX + v.GetX(), originY + v.GetY());
+    glEnd();
+}
+
+void DrawCircle(const Body* body) {
+    if (body == nullptr || body->bodyType != BodyType::Circle) return;
+
+    float radius = body->radius;
+    Vector2 position = body->position;
+
+    glBegin(0x0002);
+    for (int i = 0; i < 360; ++i) {
+        float theta = i * 3.14159f / 180.0f;
+        float x = radius * cosf(theta);
+        float y = radius * sinf(theta);
+        glVertex2f(position.GetX() + x, position.GetY() + y);
+    }
+    glEnd();
+}
+
+void DrawBox(const Body* body) {
+    if (body == nullptr || body->bodyType != BodyType::Box) return;
+
+    float width = body->width;
+    float height = body->height;
+    Vector2 position = body->position;
+
+    glBegin(0x0002);
+    glVertex2f(position.GetX() - width / 2, position.GetY() - height / 2);
+    glVertex2f(position.GetX() + width / 2, position.GetY() - height / 2);
+    glVertex2f(position.GetX() + width / 2, position.GetY() + height / 2);
+    glVertex2f(position.GetX() - width / 2, position.GetY() + height / 2);
     glEnd();
 }
 
@@ -63444,15 +63522,15 @@ int main() {
     }
 
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Vector Visualization", 
-# 21 "E:/PhysicsEngine/Source/main.cpp" 3 4
-                                                                           __null
-# 21 "E:/PhysicsEngine/Source/main.cpp"
-                                                                               , 
-# 21 "E:/PhysicsEngine/Source/main.cpp" 3 4
-                                                                                 __null
-# 21 "E:/PhysicsEngine/Source/main.cpp"
-                                                                                     );
+    GLFWwindow* window = glfwCreateWindow(1920, 1080, "Vector Visualization", 
+# 53 "E:/PhysicsEngine/Source/main.cpp" 3 4
+                                                                             __null
+# 53 "E:/PhysicsEngine/Source/main.cpp"
+                                                                                 , 
+# 53 "E:/PhysicsEngine/Source/main.cpp" 3 4
+                                                                                   __null
+# 53 "E:/PhysicsEngine/Source/main.cpp"
+                                                                                       );
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -63471,12 +63549,72 @@ int main() {
 
     Vector2 v1(0.5f, 0.75f);
     Vector2 v2(1.0f, 0.5f);
-    Vector2 v3(-1.0f, -0.5f);
+    Vector2 v3(1.50f, 0.25f);
+
+
+    std::cout << "v1 Length: " << Vector2::Length(v1) << std::endl;
+    std::cout << "v2 Length: " << Vector2::Length(v2) << std::endl;
+    std::cout << "v3 Length: " << Vector2::Length(v3) << std::endl;
+
+    std::cout << "Distance between v1 and v2: " << Vector2::Distance(v1, v2) << std::endl;
+    std::cout << "Distance between v2 and v3: " << Vector2::Distance(v2, v3) << std::endl;
+    std::cout << "Distance between v1 and v3: " << Vector2::Distance(v1, v3) << std::endl;
+
+    std::cout << "Dot product of v1 and v2: " << Vector2::Dot(v1, v2) << std::endl;
+    std::cout << "Dot product of v2 and v3: " << Vector2::Dot(v2, v3) << std::endl;
+    std::cout << "Dot product of v1 and v3: " << Vector2::Dot(v1, v3) << std::endl;
+
+    std::cout << "Cross product of v1 and v2: " << Vector2::Cross(v1, v2) << std::endl;
+    std::cout << "Cross product of v2 and v3: " << Vector2::Cross(v2, v3) << std::endl;
+    std::cout << "Cross product of v1 and v3: " << Vector2::Cross(v1, v3) << std::endl;
+
+    Vector2 v1Normalized = v1.Normalize();
+    Vector2 v2Normalized = v2.Normalize();
+    Vector2 v3Normalized = v3.Normalize();
+    std::cout << "Normalized v1: (" << v1Normalized.GetX() << ", " << v1Normalized.GetY() << ")" << std::endl;
+    std::cout << "Normalized v2: (" << v2Normalized.GetX() << ", " << v2Normalized.GetY() << ")" << std::endl;
+    std::cout << "Normalized v3: (" << v3Normalized.GetX() << ", " << v3Normalized.GetY() << ")" << std::endl;
+
+
+    Body* circleBody = nullptr;
+    Body* boxBody = nullptr;
+    std::string errorMsg;
+
+    Body bodyInstance;
+
+
+    if (bodyInstance.CreateCircle(0.5f, Vector2(0.5f, 0.5f), 2.0f, false, 0.6f, circleBody, errorMsg)) {
+        std::cout << "Circle body created successfully." << std::endl;
+    } else {
+        std::cerr << "Failed to create circle body: " << errorMsg << std::endl;
+    }
+
+    if (bodyInstance.CreateBox(1.0f, 0.5f, Vector2(-1.0f, -1.0f), 1.5f, false, 0.4f, boxBody, errorMsg)) {
+        std::cout << "Box body created successfully." << std::endl;
+    } else {
+        std::cerr << "Failed to create box body: " << errorMsg << std::endl;
+    }
 
 
     while (!glfwWindowShouldClose(window)) {
 
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(0x00004000);
+
+
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        float aspectRatio = static_cast<float>(width) / height;
+
+        glMatrixMode(0x1701);
+        glLoadIdentity();
+        if (aspectRatio >= 1.0f) {
+            glOrtho(-2.0f * aspectRatio, 2.0f * aspectRatio, -2.0f, 2.0f, -1.0f, 1.0f);
+        } else {
+            glOrtho(-2.0f, 2.0f, -2.0f / aspectRatio, 2.0f / aspectRatio, -1.0f, 1.0f);
+        }
+        glMatrixMode(0x1700);
+        glLoadIdentity();
 
 
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -63489,11 +63627,18 @@ int main() {
         DrawVector(v3, 0.0f, 0.0f);
 
 
+        glColor3f(1.0f, 1.0f, 1.0f);
+        DrawCircle(circleBody);
+        DrawBox(boxBody);
+
+
         glfwSwapBuffers(window);
-
-
         glfwPollEvents();
     }
+
+
+    delete circleBody;
+    delete boxBody;
 
     glfwDestroyWindow(window);
     glfwTerminate();

@@ -1,4 +1,28 @@
 {
+	"globsDependent" : 
+	[
+		{
+			"expression" : "E:/PhysicsEngine/Include/*.h",
+			"paths" : 
+			[
+				"E:/PhysicsEngine/Include/Body.h",
+				"E:/PhysicsEngine/Include/Vector2.h",
+				"E:/PhysicsEngine/Include/World.h"
+			],
+			"recurse" : true
+		},
+		{
+			"expression" : "E:/PhysicsEngine/Source/*.cpp",
+			"paths" : 
+			[
+				"E:/PhysicsEngine/Source/Body.cpp",
+				"E:/PhysicsEngine/Source/Vector2.cpp",
+				"E:/PhysicsEngine/Source/World.cpp",
+				"E:/PhysicsEngine/Source/main.cpp"
+			],
+			"recurse" : true
+		}
+	],
 	"inputs" : 
 	[
 		{

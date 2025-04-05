@@ -1,4 +1,4 @@
-#include "../Include/Vector2.h"
+#include "Vector2.h"
 
 // Constructors
 Vector2::Vector2() : x(0.0f), y(0.0f) {}
@@ -21,6 +21,8 @@ Vector2 Vector2::operator*(float scalar) const {
 Vector2 Vector2::operator/(float scalar) const {
     return Vector2(x / scalar, y / scalar);
 }
+
+
 
 // Methods
 float Vector2::Length(const Vector2& v) {
@@ -60,4 +62,13 @@ void Vector2::SetX(float x) {
 
 void Vector2::SetY(float y) {
     this->y = y;
+}
+
+// Clamp function
+float Vector2::Clamp(float value, float min, float max) {
+    if (min == max) return min;
+    if (min > max) throw std::out_of_range("Min is greater than max");
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
 }

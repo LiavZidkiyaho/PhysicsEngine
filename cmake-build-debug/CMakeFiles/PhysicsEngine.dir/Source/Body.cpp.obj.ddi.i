@@ -1,8 +1,11 @@
-# 0 "E:/PhysicsEngine/Source/Vector2.cpp"
+# 0 "E:/PhysicsEngine/Source/Body.cpp"
 # 1 "E:\\PhysicsEngine\\cmake-build-debug//"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "E:/PhysicsEngine/Source/Vector2.cpp"
+# 1 "E:/PhysicsEngine/Source/Body.cpp"
+# 1 "E:/PhysicsEngine/Include/Body.h" 1
+
+
 # 1 "E:/PhysicsEngine/Include/Vector2.h" 1
 
 
@@ -55580,77 +55583,122 @@ public:
 
     static float Clamp(float value, float min, float max);
 };
-# 2 "E:/PhysicsEngine/Source/Vector2.cpp" 2
+# 4 "E:/PhysicsEngine/Include/Body.h" 2
+
+enum BodyType {
+    Circle = 0,
+    Box = 1
+};
+
+class Body
+{
+private:
+
+    Vector2 linearVelocity;
+    float rotation;
+    float rotationalVelocity;
 
 
-Vector2::Vector2() : x(0.0f), y(0.0f) {}
+    Body(Vector2 position, float density, float mass, float restitution, float area, bool isStatic, float radius, float width, float height, BodyType bodyType);
 
-Vector2::Vector2(float x, float y) : x(x), y(y) {}
+public:
+
+    Body() = default;
+
+    Vector2 position;
+
+    float density;
+    float mass;
+    float restitution;
+    float area;
+
+     bool isStatic;
+
+    float radius;
+    float width;
+    float height;
+
+    BodyType bodyType;
+
+    bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+    bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+};
+# 2 "E:/PhysicsEngine/Source/Body.cpp" 2
+# 1 "E:/PhysicsEngine/Include/World.h" 1
 
 
-Vector2 Vector2::operator+(const Vector2& other) const {
-    return Vector2(x + other.x, y + other.y);
+
+class World
+{
+public:
+    static float MinBodySize;
+    static float MaxBodySize;
+
+    static float MinDensity;
+    static float MaxDensity;
+};
+# 3 "E:/PhysicsEngine/Source/Body.cpp" 2
+
+Body::Body(Vector2 position, float density, float mass, float restitution, float area, bool isStatic, float radius, float width, float height, BodyType bodyType)
+{
+    this->position = position;
+    this->linearVelocity = Vector2(0.0f, 0.0f);
+    this->rotation = 0.0f;
+    this->rotationalVelocity = 0.0f;
+
+    this->density = density;
+    this->mass = mass;
+    this->restitution = restitution;
+    this->area = area;
+
+    this->isStatic = isStatic;
+
+    this->radius = radius;
+    this->width = width;
+    this->height = height;
+
+    this->bodyType = bodyType;
 }
 
-Vector2 Vector2::operator-(const Vector2& other) const {
-    return Vector2(x - other.x, y - other.y);
+
+bool Body::CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg)
+{
+    body = nullptr;
+    errorMsg = "";
+    float area = 3.14f * radius * radius;
+    if (area < World::MinBodySize || area > World::MaxBodySize)
+    {
+        errorMsg = "Area is out of bounds";
+        return false;
+    }
+    if (density < World::MinDensity || density > World::MaxDensity)
+    {
+        errorMsg = "Density is out of bounds";
+        return false;
+    }
+    restitution = Vector2::Clamp(restitution, 0.0f, 1.0f);
+
+    body = new Body(position, density, density * area, restitution, area, isStatic, radius, 0.0f, 0.0f, BodyType::Circle);
+    return true;
 }
 
-Vector2 Vector2::operator*(float scalar) const {
-    return Vector2(x * scalar, y * scalar);
-}
+bool Body::CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg)
+{
+    body = nullptr;
+    errorMsg = "";
+    float area = width * height;
+    if (area < World::MinBodySize || area > World::MaxBodySize)
+    {
+        errorMsg = "Area is out of bounds";
+        return false;
+    }
+    if (density < World::MinDensity || density > World::MaxDensity)
+    {
+        errorMsg = "Density is out of bounds";
+        return false;
+    }
+    restitution = Vector2::Clamp(restitution, 0.0f, 1.0f);
 
-Vector2 Vector2::operator/(float scalar) const {
-    return Vector2(x / scalar, y / scalar);
-}
-
-
-
-
-float Vector2::Length(const Vector2& v) {
-    return std::sqrt(v.x * v.x + v.y * v.y);
-}
-
-float Vector2::Distance(const Vector2& a, const Vector2& b) {
-    return Length(a - b);
-}
-
-float Vector2::Dot(const Vector2& a, const Vector2& b) {
-    return a.x * b.x + a.y * b.y;
-}
-
-float Vector2::Cross(const Vector2& a, const Vector2& b) {
-    return a.x * b.y - a.y * b.x;
-}
-
-Vector2 Vector2::Normalize() const {
-    float length = Length(*this);
-    return Vector2(x / length, y / length);
-}
-
-
-float Vector2::GetX() const {
-    return x;
-}
-
-float Vector2::GetY() const {
-    return y;
-}
-
-
-void Vector2::SetX(float x) {
-    this->x = x;
-}
-
-void Vector2::SetY(float y) {
-    this->y = y;
-}
-
-
-float Vector2::Clamp(float value, float min, float max) {
-    if (min == max) return min;
-    if (min > max) throw std::out_of_range("Min is greater than max");
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
+    body = new Body(position, density, density * area, restitution, area, isStatic, 0.0f, width, height, BodyType::Box);
+    return true;
 }

@@ -78,6 +78,15 @@ rule RERUN_CMAKE
 
 
 #############################################
+# Rule for re-checking globbed directories.
+
+rule VERIFY_GLOBS
+  command = C:\Users\אבי\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -P E:\PhysicsEngine\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
+  description = Re-checking globbed directories...
+  generator = 1
+
+
+#############################################
 # Rule for cleaning all built files.
 
 rule CLEAN

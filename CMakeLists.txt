@@ -7,10 +7,12 @@ include_directories(${CMAKE_SOURCE_DIR}/Include)
 include_directories(${CMAKE_SOURCE_DIR}/Lib/GL)
 include_directories(${CMAKE_SOURCE_DIR}/Lib/GLFW)
 
-add_executable(PhysicsEngine
-        Source/main.cpp
-        Include/Vector2.h
-        Source/Vector2.cpp)
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS
+        ${CMAKE_SOURCE_DIR}/Source/*.cpp
+        ${CMAKE_SOURCE_DIR}/Include/*.h
+)
+
+add_executable(PhysicsEngine ${SOURCE_FILES})
 
 # Link full path to the .a or .lib files
 target_link_libraries(PhysicsEngine

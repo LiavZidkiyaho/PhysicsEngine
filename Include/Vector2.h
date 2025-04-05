@@ -35,6 +35,8 @@ public:
     // Setters
     void SetX(float x);
     void SetY(float y);
+
+    static float Clamp(float value, float min, float max);
 };
 
 #endif //VECTOR2_H

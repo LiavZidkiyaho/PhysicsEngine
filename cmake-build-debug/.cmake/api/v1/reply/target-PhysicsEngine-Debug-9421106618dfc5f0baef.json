@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "PhysicsEngine.exe"
+			"path" : "build/PhysicsEngine.exe"
 		},
 		{
-			"path" : "PhysicsEngine.pdb"
+			"path" : "build/PhysicsEngine.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -13,7 +13,8 @@
 	{
 		"commands" : 
 		[
-			"add_executable"
+			"add_executable",
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -27,7 +28,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 6,
+				"line" : 13,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 10,
 				"parent" : 0
 			}
 		]
@@ -39,6 +46,13 @@
 			[
 				{
 					"fragment" : "-g -std=gnu++20 -fdiagnostics-color=always"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "E:/PhysicsEngine/Include"
 				}
 			],
 			"language" : "CXX",
@@ -53,7 +67,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				2
+				1
 			]
 		}
 	],
@@ -91,13 +105,6 @@
 			"sourceIndexes" : 
 			[
 				0,
-				2
-			]
-		},
-		{
-			"name" : "Header Files",
-			"sourceIndexes" : 
-			[
 				1
 			]
 		}
@@ -109,11 +116,6 @@
 			"compileGroupIndex" : 0,
 			"path" : "Source/main.cpp",
 			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Include/Vector2.h",
-			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,

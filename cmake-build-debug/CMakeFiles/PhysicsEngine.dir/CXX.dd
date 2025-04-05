@@ -1,0 +1,5 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj: dyndep
+
+build CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj: dyndep
+

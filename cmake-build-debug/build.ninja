@@ -53,6 +53,7 @@ build CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj.ddi: CXX_SCAN__PhysicsEng
   DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj.ddi.d
   DYNDEP_INTERMEDIATE_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj.ddi
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include
   OBJ_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj
   PREPROCESSED_OUTPUT_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj.ddi.i
 
@@ -60,6 +61,7 @@ build CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj: CXX_COMPILER__PhysicsEng
   DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj.d
   DYNDEP_MODULE_MAP_FILE = CMakeFiles\PhysicsEngine.dir\Source\main.cpp.obj.modmap
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include
   OBJECT_DIR = CMakeFiles\PhysicsEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\PhysicsEngine.dir\Source
   dyndep = CMakeFiles/PhysicsEngine.dir/CXX.dd
@@ -68,6 +70,7 @@ build CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.ddi: CXX_SCAN__Physics
   DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.ddi.d
   DYNDEP_INTERMEDIATE_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.ddi
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include
   OBJ_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj
   PREPROCESSED_OUTPUT_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.ddi.i
 
@@ -75,6 +78,7 @@ build CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj: CXX_COMPILER__Physics
   DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.d
   DYNDEP_MODULE_MAP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.modmap
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include
   OBJECT_DIR = CMakeFiles\PhysicsEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\PhysicsEngine.dir\Source
   dyndep = CMakeFiles/PhysicsEngine.dir/CXX.dd
@@ -87,15 +91,15 @@ build CMakeFiles/PhysicsEngine.dir/CXX.dd | E$:/PhysicsEngine/cmake-build-debug/
 
 
 #############################################
-# Link the executable PhysicsEngine.exe
+# Link the executable build\PhysicsEngine.exe
 
-build PhysicsEngine.exe: CXX_EXECUTABLE_LINKER__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj
+build build/PhysicsEngine.exe: CXX_EXECUTABLE_LINKER__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\PhysicsEngine.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = PhysicsEngine.exe
+  TARGET_FILE = build\PhysicsEngine.exe
   TARGET_IMPLIB = libPhysicsEngine.dll.a
   TARGET_PDB = PhysicsEngine.exe.dbg
 
@@ -125,7 +129,9 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build PhysicsEngine: phony PhysicsEngine.exe
+build PhysicsEngine: phony build/PhysicsEngine.exe
+
+build PhysicsEngine.exe: phony build/PhysicsEngine.exe
 
 # =============================================================================
 # Folder targets.
@@ -135,7 +141,7 @@ build PhysicsEngine: phony PhysicsEngine.exe
 #############################################
 # Folder: E:/PhysicsEngine/cmake-build-debug
 
-build all: phony PhysicsEngine.exe
+build all: phony build/PhysicsEngine.exe
 
 # =============================================================================
 # Built-in targets

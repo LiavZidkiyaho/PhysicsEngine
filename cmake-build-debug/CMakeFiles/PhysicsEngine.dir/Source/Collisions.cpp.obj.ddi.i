@@ -11,6 +11,7 @@
 
 
 
+
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 1 3
 # 39 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 3
        
@@ -21850,7 +21851,7 @@ namespace __gnu_cxx
 
 
 }
-# 5 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 6 "E:/PhysicsEngine/Include/Vector2.h" 2
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 1 3
 # 36 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 3
        
@@ -55546,10 +55547,28 @@ namespace std
 # 85 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 3
 
 }
-# 6 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 7 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 1 "E:/PhysicsEngine/Include/Transform.h" 1
 
 
-# 7 "E:/PhysicsEngine/Include/Vector2.h"
+
+
+# 1 "E:/PhysicsEngine/Include/Vector2.h" 1
+# 6 "E:/PhysicsEngine/Include/Transform.h" 2
+
+# 6 "E:/PhysicsEngine/Include/Transform.h"
+class Vector2;
+
+class Transform {
+public:
+    float x, y, angle;
+    Transform(float x = 0.0f, float y = 0.0f, float angle = 0.0f);
+    Transform(Vector2 position, float angle = 0.0f);
+};
+# 8 "E:/PhysicsEngine/Include/Vector2.h" 2
+
+class Transform;
+
 class Vector2
 {
 private:
@@ -55575,7 +55594,7 @@ public:
     static float Dot(const Vector2& a, const Vector2& b);
     static float Cross(const Vector2& a, const Vector2& b);
     Vector2 Normalize() const;
-
+    static Vector2 Transform(const Vector2& v, const Transform& transform);
 
     float GetX() const;
     float GetY() const;

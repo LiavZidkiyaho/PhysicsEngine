@@ -1,0 +1,11 @@
+{
+"rules": [
+{
+"primary-output": "CMakeFiles/PhysicsEngine.dir/Source/Transform.cpp.o",
+"requires": [
+]
+}
+],
+"version": 0,
+"revision": 0
+}

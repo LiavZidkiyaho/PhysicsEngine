@@ -3,6 +3,8 @@ build CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj: dyndep
 
 build CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj: dyndep
 
+build CMakeFiles/PhysicsEngine.dir/Source/Transform.cpp.obj: dyndep
+
 build CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj: dyndep
 
 build CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj: dyndep

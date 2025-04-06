@@ -1,8 +1,12 @@
+// `Include/Vector2.h`
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
 #include <cmath>
 #include <iostream>
+#include "Transform.h"
+
+class Transform; // Forward declaration
 
 class Vector2
 {
@@ -29,7 +33,7 @@ public:
     static float Dot(const Vector2& a, const Vector2& b);
     static float Cross(const Vector2& a, const Vector2& b);
     Vector2 Normalize() const;
-
+    static Vector2 Transform(const Vector2& v, const Transform& transform);
     // Getters
     float GetX() const;
     float GetY() const;
@@ -41,4 +45,4 @@ public:
     static float Clamp(float value, float min, float max);
 };
 
-#endif //VECTOR2_H
+#endif // VECTOR2_H

@@ -1,8 +1,12 @@
-# 0 "E:/PhysicsEngine/Source/Vector2.cpp"
+# 0 "E:/PhysicsEngine/Source/Transform.cpp"
 # 1 "E:\\PhysicsEngine\\cmake-build-debug//"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "E:/PhysicsEngine/Source/Vector2.cpp"
+# 1 "E:/PhysicsEngine/Source/Transform.cpp"
+# 1 "E:/PhysicsEngine/Include/Transform.h" 1
+
+
+
 
 # 1 "E:/PhysicsEngine/Include/Vector2.h" 1
 
@@ -55546,24 +55550,10 @@ namespace std
 }
 # 7 "E:/PhysicsEngine/Include/Vector2.h" 2
 # 1 "E:/PhysicsEngine/Include/Transform.h" 1
-
-
-
-
-# 1 "E:/PhysicsEngine/Include/Vector2.h" 1
-# 6 "E:/PhysicsEngine/Include/Transform.h" 2
-
-# 6 "E:/PhysicsEngine/Include/Transform.h"
-class Vector2;
-
-class Transform {
-public:
-    float x, y, angle;
-    Transform(float x = 0.0f, float y = 0.0f, float angle = 0.0f);
-    Transform(Vector2 position, float angle = 0.0f);
-};
 # 8 "E:/PhysicsEngine/Include/Vector2.h" 2
 
+
+# 9 "E:/PhysicsEngine/Include/Vector2.h"
 class Transform;
 
 class Vector2
@@ -55602,85 +55592,19 @@ public:
 
     static float Clamp(float value, float min, float max);
 };
-# 3 "E:/PhysicsEngine/Source/Vector2.cpp" 2
+# 6 "E:/PhysicsEngine/Include/Transform.h" 2
+class Vector2;
 
-Vector2::Vector2() : x(0), y(0) {}
+class Transform {
+public:
+    float x, y, angle;
+    Transform(float x = 0.0f, float y = 0.0f, float angle = 0.0f);
+    Transform(Vector2 position, float angle = 0.0f);
+};
+# 2 "E:/PhysicsEngine/Source/Transform.cpp" 2
 
-Vector2::Vector2(float x, float y) : x(x), y(y) {}
+Transform::Transform(float x, float y, float angle)
+    : x(x), y(y), angle(angle) {}
 
-Vector2 Vector2::operator+(const Vector2& other) const {
-    return Vector2(x + other.x, y + other.y);
-}
-
-Vector2 Vector2::operator-(const Vector2& other) const {
-    return Vector2(x - other.x, y - other.y);
-}
-
-Vector2 Vector2::operator-() const {
-    return Vector2(-x, -y);
-}
-
-Vector2 Vector2::operator*(float scalar) const {
-    return Vector2(x * scalar, y * scalar);
-}
-
-Vector2 Vector2::operator/(float scalar) const {
-    return Vector2(x / scalar, y / scalar);
-}
-
-Vector2 Vector2::operator+=(const Vector2& other) {
-    x += other.x;
-    y += other.y;
-    return *this;
-}
-
-float Vector2::Length(const Vector2& v) {
-    return std::sqrt(v.x * v.x + v.y * v.y);
-}
-
-float Vector2::Distance(const Vector2& a, const Vector2& b) {
-    return Length(a - b);
-}
-
-float Vector2::Dot(const Vector2& a, const Vector2& b) {
-    return a.x * b.x + a.y * b.y;
-}
-
-float Vector2::Cross(const Vector2& a, const Vector2& b) {
-    return a.x * b.y - a.y * b.x;
-}
-
-Vector2 Vector2::Normalize() const {
-    float length = Length(*this);
-    return Vector2(x / length, y / length);
-}
-
-Vector2 Vector2::Transform(const Vector2& v, const::Transform& transform) {
-    float cosAngle = std::cos(transform.angle);
-    float sinAngle = std::sin(transform.angle);
-    float newX = v.x * cosAngle - v.y * sinAngle + transform.x;
-    float newY = v.x * sinAngle + v.y * cosAngle + transform.y;
-    return Vector2(newX, newY);
-}
-
-float Vector2::GetX() const {
-    return x;
-}
-
-float Vector2::GetY() const {
-    return y;
-}
-
-void Vector2::SetX(float x) {
-    this->x = x;
-}
-
-void Vector2::SetY(float y) {
-    this->y = y;
-}
-
-float Vector2::Clamp(float value, float min, float max) {
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
-}
+Transform::Transform(Vector2 position, float angle)
+    : x(position.GetX()), y(position.GetY()), angle(angle) {}

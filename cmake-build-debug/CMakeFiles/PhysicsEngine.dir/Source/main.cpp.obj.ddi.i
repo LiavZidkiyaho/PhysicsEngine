@@ -8093,6 +8093,7 @@ typedef struct GLFWallocator
 
 
 
+
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 1 3
 # 39 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 3
        
@@ -29754,7 +29755,7 @@ namespace __gnu_cxx
 
 
 }
-# 5 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 6 "E:/PhysicsEngine/Include/Vector2.h" 2
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 1 3
 # 36 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 3
        
@@ -63390,10 +63391,28 @@ namespace std
 # 85 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream" 3
 
 }
-# 6 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 7 "E:/PhysicsEngine/Include/Vector2.h" 2
+# 1 "E:/PhysicsEngine/Include/Transform.h" 1
 
 
-# 7 "E:/PhysicsEngine/Include/Vector2.h"
+
+
+# 1 "E:/PhysicsEngine/Include/Vector2.h" 1
+# 6 "E:/PhysicsEngine/Include/Transform.h" 2
+
+# 6 "E:/PhysicsEngine/Include/Transform.h"
+class Vector2;
+
+class Transform {
+public:
+    float x, y, angle;
+    Transform(float x = 0.0f, float y = 0.0f, float angle = 0.0f);
+    Transform(Vector2 position, float angle = 0.0f);
+};
+# 8 "E:/PhysicsEngine/Include/Vector2.h" 2
+
+class Transform;
+
 class Vector2
 {
 private:
@@ -63419,7 +63438,7 @@ public:
     static float Dot(const Vector2& a, const Vector2& b);
     static float Cross(const Vector2& a, const Vector2& b);
     Vector2 Normalize() const;
-
+    static Vector2 Transform(const Vector2& v, const Transform& transform);
 
     float GetX() const;
     float GetY() const;
@@ -63434,63 +63453,6 @@ public:
 # 1 "E:/PhysicsEngine/Include/Body.h" 1
 
 
-# 1 "E:/PhysicsEngine/Include/Vector2.h" 1
-# 4 "E:/PhysicsEngine/Include/Body.h" 2
-
-enum BodyType {
-    Circle = 0,
-    Box = 1
-};
-
-class Body
-{
-private:
-
-    Vector2 linearVelocity;
-    float rotation;
-    float rotationalVelocity;
-
-
-    Body(Vector2 position, float density, float mass, float restitution, float area, bool isStatic, float radius, float width, float height, BodyType bodyType);
-
-public:
-
-    Body() = default;
-
-    Vector2 position;
-
-    float density;
-    float mass;
-    float restitution;
-    float area;
-
-     bool isStatic;
-
-    float radius;
-    float width;
-    float height;
-
-    BodyType bodyType;
-
-    bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
-    bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
-
-    void Move(Vector2 amount);
-    void MoveTo(Vector2 position);
-};
-# 5 "E:/PhysicsEngine/Source/main.cpp" 2
-# 1 "E:/PhysicsEngine/Include/Collisions.h" 1
-
-
-
-
-
-class Collisions
-{
-  public:
-    static bool IntersectCircles(const Vector2& centerA, float radiusA, const Vector2& centerB, float radiusB, Vector2& normal, float& depth);
-};
-# 6 "E:/PhysicsEngine/Source/main.cpp" 2
 
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/vector" 1 3
 # 58 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/vector" 3
@@ -68402,6 +68364,56 @@ namespace std
     }
 
 }
+# 5 "E:/PhysicsEngine/Include/Body.h" 2
+
+
+# 6 "E:/PhysicsEngine/Include/Body.h"
+enum BodyType { Circle, Box };
+
+class Body {
+public:
+    Vector2 position;
+    Vector2 linearVelocity;
+    float rotation;
+    float rotationalVelocity;
+    float density;
+    float mass;
+    float restitution;
+    float area;
+    bool isStatic;
+    float radius;
+    float width, height;
+    BodyType bodyType;
+    std::vector<Vector2> vertices;
+    bool transformUpdateRequired = false;
+
+
+    Body(Vector2 position = Vector2(0.0f, 0.0f), float density = 1.0f, float mass = 1.0f,
+         float restitution = 0.5f, float area = 1.0f, bool isStatic = false, float radius = 0.5f,
+         float width = 1.0f, float height = 1.0f, BodyType bodyType = BodyType::Circle);
+
+    std::vector<Vector2> CreateBoxVertices(float width, float height);
+    void Move(Vector2 amount);
+    void MoveTo(Vector2 position);
+    void Rotate(float angle);
+    static bool CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+    static bool CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution, Body*& body, std::string& errorMsg);
+};
+# 5 "E:/PhysicsEngine/Source/main.cpp" 2
+# 1 "E:/PhysicsEngine/Include/Collisions.h" 1
+
+
+
+
+
+class Collisions
+{
+  public:
+    static bool IntersectCircles(const Vector2& centerA, float radiusA, const Vector2& centerB, float radiusB, Vector2& normal, float& depth);
+};
+# 6 "E:/PhysicsEngine/Source/main.cpp" 2
+
+# 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/vector" 1 3
 # 8 "E:/PhysicsEngine/Source/main.cpp" 2
 # 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdlib" 1 3
 # 39 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cstdlib" 3
@@ -68412,6 +68424,8 @@ namespace std
 # 39 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ctime" 3
        
 # 40 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ctime" 3
+# 58 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ctime" 3
+
 # 58 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ctime" 3
 namespace std
 {
@@ -68438,13 +68452,18 @@ namespace std
   using ::timespec_get;
 }
 # 10 "E:/PhysicsEngine/Source/main.cpp" 2
+# 1 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 1 3
+# 39 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 3
+       
+# 40 "C:/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/cmath" 3
+# 11 "E:/PhysicsEngine/Source/main.cpp" 2
 
 
-# 11 "E:/PhysicsEngine/Source/main.cpp"
+# 12 "E:/PhysicsEngine/Source/main.cpp"
 GLFWwindow* window = nullptr;
-std::vector<Body*> circles;
+std::vector<Body*> bodies;
 std::vector<Vector2> randomColors;
-int selectedCircleIndex = 0;
+int selectedBodyIndex = 0;
 bool tabPressedLastFrame = false;
 
 bool Init() {
@@ -68454,13 +68473,13 @@ bool Init() {
     }
 
     window = glfwCreateWindow(1920, 1080, "Vector Visualization", 
-# 23 "E:/PhysicsEngine/Source/main.cpp" 3 4
+# 24 "E:/PhysicsEngine/Source/main.cpp" 3 4
                                                                  __null
-# 23 "E:/PhysicsEngine/Source/main.cpp"
+# 24 "E:/PhysicsEngine/Source/main.cpp"
                                                                      , 
-# 23 "E:/PhysicsEngine/Source/main.cpp" 3 4
+# 24 "E:/PhysicsEngine/Source/main.cpp" 3 4
                                                                        __null
-# 23 "E:/PhysicsEngine/Source/main.cpp"
+# 24 "E:/PhysicsEngine/Source/main.cpp"
                                                                            );
     if (!window) {
         std::cerr << "Failed to create GLFW window\n";
@@ -68479,26 +68498,64 @@ bool Init() {
     return true;
 }
 
-void CreateCircles(int count = 10) {
+void CreateCircle(float radius, Vector2 position, float density, bool isStatic, float restitution) {
+    Body* circle = nullptr;
+    std::string errorMsg;
+    Body bodyInstance;
+
+    if (bodyInstance.CreateCircle(radius, position, density, isStatic, restitution, circle, errorMsg)) {
+        bodies.push_back(circle);
+        randomColors.emplace_back(
+            (std::rand() % 256) / 255.0f,
+            (std::rand() % 256) / 255.0f
+        );
+    } else {
+        std::cerr << "Failed to create circle body: " << errorMsg << "\n";
+    }
+}
+
+void CreateBox(float width, float height, Vector2 position, float density, bool isStatic, float restitution) {
+    Body* box = nullptr;
+    std::string errorMsg;
+    Body bodyInstance;
+
+    if (bodyInstance.CreateBox(width, height, position, density, isStatic, restitution, box, errorMsg)) {
+        bodies.push_back(box);
+        randomColors.emplace_back(
+            (std::rand() % 256) / 255.0f,
+            (std::rand() % 256) / 255.0f
+        );
+    } else {
+        std::cerr << "Failed to create box body: " << errorMsg << "\n";
+    }
+}
+
+void GenerateCircles(int count = 10) {
     for (int i = 0; i < count; ++i) {
-        float radius = 0.2f;
-        Vector2 position((std::rand() % 400) / 100.0f - 2.0f, (std::rand() % 400) / 100.0f - 2.0f);
+        float radius = 0.2;
+        Vector2 position(
+            (std::rand() % 400) / 100.0f - 2.0f,
+            (std::rand() % 400) / 100.0f - 2.0f
+        );
         float density = 2.0f;
         bool isStatic = false;
         float restitution = 0.6f;
-        std::string errorMsg;
+        CreateCircle(radius, position, density, isStatic, restitution);
+    }
+}
 
-        Body* circle = nullptr;
-        Body bodyInstance;
-        if (bodyInstance.CreateCircle(radius, position, density, isStatic, restitution, circle, errorMsg)) {
-            circles.push_back(circle);
-            randomColors.emplace_back(
-                (std::rand() % 256) / 255.0f,
-                (std::rand() % 256) / 255.0f
-            );
-        } else {
-            std::cerr << "Failed to create circle body: " << errorMsg << "\n";
-        }
+void GenerateBoxes(int count = 10) {
+    for (int i = 0; i < count; ++i) {
+        float width = 0.2;
+        float height = 0.2;
+        Vector2 position(
+            (std::rand() % 400) / 100.0f - 2.0f,
+            (std::rand() % 400) / 100.0f - 2.0f
+        );
+        float density = 2.0f;
+        bool isStatic = false;
+        float restitution = 0.6f;
+        CreateBox(width, height, position, density, isStatic, restitution);
     }
 }
 
@@ -68518,10 +68575,69 @@ void DrawCircle(const Body* body) {
     glEnd();
 }
 
-void ProcessInput() {
-    if (circles.empty()) return;
+void DrawBox(const Body* body) {
+    if (!body || body->bodyType != BodyType::Box) return;
 
-    Body* selected = circles[selectedCircleIndex];
+    Vector2 position = body->position;
+    float width = body->width;
+    float height = body->height;
+
+    std::vector<Vector2> rotatedVertices = body->vertices;
+
+    glBegin(0x0007);
+    for (const auto& vertex : rotatedVertices) {
+        glVertex2f(position.GetX() + vertex.GetX(), position.GetY() + vertex.GetY());
+    }
+    glEnd();
+}
+
+void ResolveCollisions() {
+    for (size_t i = 0; i < bodies.size(); ++i) {
+        for (size_t j = i + 1; j < bodies.size(); ++j) {
+            Vector2 normal;
+            float depth;
+
+            if (Collisions::IntersectCircles(
+                bodies[i]->position, bodies[i]->radius,
+                bodies[j]->position, bodies[j]->radius,
+                normal, depth)) {
+
+                bool aStatic = bodies[i]->isStatic;
+                bool bStatic = bodies[j]->isStatic;
+
+                if (!aStatic && !bStatic) {
+                    bodies[i]->Move(-normal * (depth / 2.0f));
+                    bodies[j]->Move(normal * (depth / 2.0f));
+                } else if (!aStatic && bStatic) {
+                    bodies[i]->Move(-normal * depth);
+                } else if (aStatic && !bStatic) {
+                    bodies[j]->Move(normal * depth);
+                }
+
+
+                glColor3f(1.0f, 0.0f, 0.0f);
+                glBegin(0x0001);
+                glVertex2f(bodies[i]->position.GetX(), bodies[i]->position.GetY());
+                glVertex2f(bodies[j]->position.GetX(), bodies[j]->position.GetY());
+                glEnd();
+            }
+        }
+    }
+}
+
+void ResolveRotation()
+{
+    for (size_t i = 0; i < bodies.size(); ++i) {
+        Body * body = bodies[i];
+        const float pi = 3.14159f;
+        body->Rotate(pi / 2.0f);
+    }
+}
+
+void ProcessInput() {
+    if (bodies.empty()) return;
+
+    Body* selected = bodies[selectedBodyIndex];
 
     if (glfwGetKey(window, 263) == 1)
         selected->position += Vector2(-0.01f, 0.0f);
@@ -68534,7 +68650,7 @@ void ProcessInput() {
 
     bool tabPressedNow = glfwGetKey(window, 258) == 1;
     if (tabPressedNow && !tabPressedLastFrame)
-        selectedCircleIndex = (selectedCircleIndex + 1) % circles.size();
+        selectedBodyIndex = (selectedBodyIndex + 1) % bodies.size();
     tabPressedLastFrame = tabPressedNow;
 }
 
@@ -68552,70 +68668,40 @@ void Render() {
         glOrtho(-2.0f * aspect, 2.0f * aspect, -2.0f, 2.0f, -1.0f, 1.0f);
     else
         glOrtho(-2.0f, 2.0f, -2.0f / aspect, 2.0f / aspect, -1.0f, 1.0f);
+
     glMatrixMode(0x1700);
     glLoadIdentity();
 
-
-    for (size_t i = 0; i < circles.size(); ++i) {
-        Vector2 color = randomColors[i];
-        glColor3f(color.GetX(), color.GetY(), 1.0f - color.GetY());
-        DrawCircle(circles[i]);
-    }
-
-    for (size_t i = 0; i < circles.size(); ++i) {
-        for (size_t j = i + 1; j < circles.size(); ++j) {
-            Vector2 normal;
-            float depth;
-
-            if (Collisions::IntersectCircles(
-                circles[i]->position, circles[i]->radius,
-                circles[j]->position, circles[j]->radius,
-                normal, depth)) {
-
-                bool aStatic = circles[i]->isStatic;
-                bool bStatic = circles[j]->isStatic;
-
-                if (!aStatic && !bStatic) {
-                    circles[i]->Move(-normal * (depth / 2.0f));
-                    circles[j]->Move(normal * (depth / 2.0f));
-                } else if (!aStatic && bStatic) {
-                    circles[i]->Move(-normal * depth);
-                } else if (aStatic && !bStatic) {
-                    circles[j]->Move(normal * depth);
-                }
-
-
-                glColor3f(1.0f, 0.0f, 0.0f);
-                glBegin(0x0001);
-                glVertex2f(circles[i]->position.GetX(), circles[i]->position.GetY());
-                glVertex2f(circles[j]->position.GetX(), circles[j]->position.GetY());
-                glEnd();
-            }
-        }
+    for (size_t i = 0; i < bodies.size(); ++i) {
+        const Body* body = bodies[i];
+        glColor3f(randomColors[i].GetX(), randomColors[i].GetY(), 1.0f);
+        if (body->bodyType == BodyType::Circle)
+            DrawCircle(body);
+        else if (body->bodyType == BodyType::Box)
+            DrawBox(body);
     }
 
     glfwSwapBuffers(window);
 }
 
-
-
-void Cleanup() {
-    for (auto c : circles) delete c;
-    glfwDestroyWindow(window);
-    glfwTerminate();
-}
-
-int main() {
+int main()
+{
     if (!Init()) return -1;
 
-    CreateCircles();
+    GenerateCircles();
+    GenerateBoxes();
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         ProcessInput();
+        ResolveCollisions();
+        ResolveRotation();
         Render();
+
         glfwPollEvents();
     }
 
-    Cleanup();
+    glfwDestroyWindow(window);
+    glfwTerminate();
     return 0;
 }

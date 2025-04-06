@@ -66,6 +66,23 @@ build CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj: CXX_COMPILER__PhysicsEng
   OBJECT_FILE_DIR = CMakeFiles\PhysicsEngine.dir\Source
   dyndep = CMakeFiles/PhysicsEngine.dir/CXX.dd
 
+build CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj.ddi: CXX_SCAN__PhysicsEngine_Debug E$:/PhysicsEngine/Source/Collisions.cpp || cmake_object_order_depends_target_PhysicsEngine
+  DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj.ddi
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include -IE:/PhysicsEngine/Lib/GL -IE:/PhysicsEngine/Lib/GLFW
+  OBJ_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj.ddi.i
+
+build CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj: CXX_COMPILER__PhysicsEngine_scanned_Debug E$:/PhysicsEngine/Source/Collisions.cpp | CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj.modmap || cmake_object_order_depends_target_PhysicsEngine CMakeFiles/PhysicsEngine.dir/CXX.dd
+  DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Collisions.cpp.obj.modmap
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IE:/PhysicsEngine/Include -IE:/PhysicsEngine/Lib/GL -IE:/PhysicsEngine/Lib/GLFW
+  OBJECT_DIR = CMakeFiles\PhysicsEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\PhysicsEngine.dir\Source
+  dyndep = CMakeFiles/PhysicsEngine.dir/CXX.dd
+
 build CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.ddi: CXX_SCAN__PhysicsEngine_Debug E$:/PhysicsEngine/Source/Vector2.cpp || cmake_object_order_depends_target_PhysicsEngine
   DEP_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.ddi.d
   DYNDEP_INTERMEDIATE_FILE = CMakeFiles\PhysicsEngine.dir\Source\Vector2.cpp.obj.ddi
@@ -117,7 +134,7 @@ build CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj: CXX_COMPILER__PhysicsEng
   OBJECT_FILE_DIR = CMakeFiles\PhysicsEngine.dir\Source
   dyndep = CMakeFiles/PhysicsEngine.dir/CXX.dd
 
-build CMakeFiles/PhysicsEngine.dir/CXX.dd | E$:/PhysicsEngine/cmake-build-debug/CMakeFiles/PhysicsEngine.dir/CXXModules.json CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj.modmap: CXX_DYNDEP__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj.ddi | E$:/PhysicsEngine/cmake-build-debug/CMakeFiles/PhysicsEngine.dir/CXXDependInfo.json
+build CMakeFiles/PhysicsEngine.dir/CXX.dd | E$:/PhysicsEngine/cmake-build-debug/CMakeFiles/PhysicsEngine.dir/CXXModules.json CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj.modmap CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj.modmap: CXX_DYNDEP__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj.ddi CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj.ddi | E$:/PhysicsEngine/cmake-build-debug/CMakeFiles/PhysicsEngine.dir/CXXDependInfo.json
 
 
 # =============================================================================
@@ -127,7 +144,7 @@ build CMakeFiles/PhysicsEngine.dir/CXX.dd | E$:/PhysicsEngine/cmake-build-debug/
 #############################################
 # Link the executable PhysicsEngine.exe
 
-build PhysicsEngine.exe: CXX_EXECUTABLE_LINKER__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj | E$:/PhysicsEngine/Lib/glew-2.1.0/lib/Release/x64/glew32.lib E$:/PhysicsEngine/Lib/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
+build PhysicsEngine.exe: CXX_EXECUTABLE_LINKER__PhysicsEngine_Debug CMakeFiles/PhysicsEngine.dir/Source/Body.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/Collisions.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/Vector2.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/World.cpp.obj CMakeFiles/PhysicsEngine.dir/Source/main.cpp.obj | E$:/PhysicsEngine/Lib/glew-2.1.0/lib/Release/x64/glew32.lib E$:/PhysicsEngine/Lib/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
   FLAGS = -g
   LINK_LIBRARIES = E:/PhysicsEngine/Lib/glew-2.1.0/lib/Release/x64/glew32.lib  E:/PhysicsEngine/Lib/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\PhysicsEngine.dir

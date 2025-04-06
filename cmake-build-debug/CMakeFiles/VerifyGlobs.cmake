@@ -6,6 +6,7 @@ cmake_policy(SET CMP0009 NEW)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "E:/PhysicsEngine/Include/*.h")
 set(OLD_GLOB
   "E:/PhysicsEngine/Include/Body.h"
+  "E:/PhysicsEngine/Include/Collisions.h"
   "E:/PhysicsEngine/Include/Vector2.h"
   "E:/PhysicsEngine/Include/World.h"
   )
@@ -18,6 +19,7 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "E:/PhysicsEngine/Source/*.cpp")
 set(OLD_GLOB
   "E:/PhysicsEngine/Source/Body.cpp"
+  "E:/PhysicsEngine/Source/Collisions.cpp"
   "E:/PhysicsEngine/Source/Vector2.cpp"
   "E:/PhysicsEngine/Source/World.cpp"
   "E:/PhysicsEngine/Source/main.cpp"

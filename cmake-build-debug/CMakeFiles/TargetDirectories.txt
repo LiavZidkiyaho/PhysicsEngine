@@ -1,3 +1,0 @@
-E:/PhysicsEngine/cmake-build-debug/CMakeFiles/PhysicsEngine.dir
-E:/PhysicsEngine/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/PhysicsEngine/cmake-build-debug/CMakeFiles/rebuild_cache.dir

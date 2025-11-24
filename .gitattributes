@@ -1,2 +1,33 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Ignore vendored libraries (GitHub Linguist will not count them)
+Lib/* linguist-vendored
+Lib/**/* linguist-vendored
+
+# Ignore build artifacts
+cmake-build-debug/* linguist-vendored
+cmake-build-debug/**/* linguist-vendored
+
+# Ignore CLion / JetBrains project metadata
+.idea/* linguist-vendored
+.idea/**/* linguist-vendored
+
+# Treat any SWIG-like files as generated, not source code
+*.swg linguist-generated
+*.i linguist-generated
+
+# Force language detection priority for source files
+*.c linguist-detectable
+*.cpp linguist-detectable
+*.cc linguist-detectable
+*.h linguist-detectable
+*.hpp linguist-detectable
+
+# Optional: ignore documentation/web files from stats
+*.html linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+
+# Optional: ignore binary assets
+*.png linguist-vendored
+*.jpg linguist-vendored
+*.jpeg linguist-vendored
+*.gif linguist-vendored

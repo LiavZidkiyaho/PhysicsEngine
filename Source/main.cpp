@@ -1,8 +1,10 @@
-#include <../Lib/glew-2.1.0/include/GL/glew.h>
-#include <../Lib/glfw-3.4.bin.WIN64/include/GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Vector2.h"
 #include "Body.h"
 #include "Collisions.h"
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -10,7 +12,7 @@
 #include <cmath>
 
 GLFWwindow* window = nullptr;
-std::vector<Body*> bodies; // Stores both circles and boxes
+std::vector<Body*> bodies;
 std::vector<Vector2> randomColors;
 int selectedBodyIndex = 0;
 bool tabPressedLastFrame = false;
@@ -30,8 +32,9 @@ bool Init() {
 
     glfwMakeContextCurrent(window);
 
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW\n";
+    // Initialize GLAD instead of GLEW
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD\n";
         return false;
     }
 
@@ -51,7 +54,7 @@ void CreateCircle(float radius, Vector2 position, float density, bool isStatic, 
             (std::rand() % 256) / 255.0f
         );
     } else {
-        std::cerr << "Failed to create circle body: " << errorMsg << "\n";
+        std::cerr << "Failed to create circle: " << errorMsg << "\n";
     }
 }
 
@@ -67,16 +70,16 @@ void CreateBox(float width, float height, Vector2 position, float density, bool 
             (std::rand() % 256) / 255.0f
         );
     } else {
-        std::cerr << "Failed to create box body: " << errorMsg << "\n";
+        std::cerr << "Failed to create box: " << errorMsg << "\n";
     }
 }
 
 void GenerateCircles(int count = 10) {
     for (int i = 0; i < count; ++i) {
-        float radius = 0.2; // Random radius between 0.1 and 0.6
+        float radius = 0.2f;
         Vector2 position(
-            (std::rand() % 400) / 100.0f - 2.0f, // Random position between -2.0 and 2.0 on X-axis
-            (std::rand() % 400) / 100.0f - 2.0f  // Random position between -2.0 and 2.0 on Y-axis
+            (std::rand() % 400) / 100.0f - 2.0f,
+            (std::rand() % 400) / 100.0f - 2.0f
         );
         float density = 2.0f;
         bool isStatic = false;
@@ -87,11 +90,11 @@ void GenerateCircles(int count = 10) {
 
 void GenerateBoxes(int count = 10) {
     for (int i = 0; i < count; ++i) {
-        float width = 0.2;  // Random width between 0.2 and 0.7
-        float height = 0.2; // Random height between 0.2 and 0.7
+        float width = 0.2f;
+        float height = 0.2f;
         Vector2 position(
-            (std::rand() % 400) / 100.0f - 2.0f, // Random position between -2.0 and 2.0 on X-axis
-            (std::rand() % 400) / 100.0f - 2.0f  // Random position between -2.0 and 2.0 on Y-axis
+            (std::rand() % 400) / 100.0f - 2.0f,
+            (std::rand() % 400) / 100.0f - 2.0f
         );
         float density = 2.0f;
         bool isStatic = false;
@@ -109,9 +112,8 @@ void DrawCircle(const Body* body) {
     glBegin(GL_POLYGON);
     for (int i = 0; i < 360; ++i) {
         float theta = i * 3.14159f / 180.0f;
-        float x = radius * cosf(theta);
-        float y = radius * sinf(theta);
-        glVertex2f(pos.GetX() + x, pos.GetY() + y);
+        glVertex2f(pos.GetX() + radius * cosf(theta),
+                   pos.GetY() + radius * sinf(theta));
     }
     glEnd();
 }
@@ -120,14 +122,11 @@ void DrawBox(const Body* body) {
     if (!body || body->bodyType != BodyType::Box) return;
 
     Vector2 position = body->position;
-    float width = body->width;
-    float height = body->height;
-
-    std::vector<Vector2> rotatedVertices = body->vertices;
+    const auto& verts = body->vertices;
 
     glBegin(GL_QUADS);
-    for (const auto& vertex : rotatedVertices) {
-        glVertex2f(position.GetX() + vertex.GetX(), position.GetY() + vertex.GetY());
+    for (const auto& v : verts) {
+        glVertex2f(position.GetX() + v.GetX(), position.GetY() + v.GetY());
     }
     glEnd();
 }
@@ -139,9 +138,9 @@ void ResolveCollisions() {
             float depth;
 
             if (Collisions::IntersectCircles(
-                bodies[i]->position, bodies[i]->radius,
-                bodies[j]->position, bodies[j]->radius,
-                normal, depth)) {
+                    bodies[i]->position, bodies[i]->radius,
+                    bodies[j]->position, bodies[j]->radius,
+                    normal, depth)) {
 
                 bool aStatic = bodies[i]->isStatic;
                 bool bStatic = bodies[j]->isStatic;
@@ -155,7 +154,7 @@ void ResolveCollisions() {
                     bodies[j]->Move(normal * depth);
                 }
 
-                // Optional: draw red line to indicate collision
+                // Debug line
                 glColor3f(1.0f, 0.0f, 0.0f);
                 glBegin(GL_LINES);
                 glVertex2f(bodies[i]->position.GetX(), bodies[i]->position.GetY());
@@ -166,10 +165,8 @@ void ResolveCollisions() {
     }
 }
 
-void ResolveRotation()
-{
-    for (size_t i = 0; i < bodies.size(); ++i) {
-        Body * body = bodies[i];
+void ResolveRotation() {
+    for (auto* body : bodies) {
         const float pi = 3.14159f;
         body->Rotate(pi / 2.0f);
     }
@@ -196,26 +193,26 @@ void ProcessInput() {
 }
 
 void Render() {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
-    float aspect = static_cast<float>(width) / height;
+    float aspect = float(width) / float(height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (aspect >= 1.0f)
-        glOrtho(-2.0f * aspect, 2.0f * aspect, -2.0f, 2.0f, -1.0f, 1.0f);
+        glOrtho(-2.f * aspect, 2.f * aspect, -2.f, 2.f, -1.f, 1.f);
     else
-        glOrtho(-2.0f, 2.0f, -2.0f / aspect, 2.0f / aspect, -1.0f, 1.0f);
+        glOrtho(-2.f, 2.f, -2.f / aspect, 2.f / aspect, -1.f, 1.f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     for (size_t i = 0; i < bodies.size(); ++i) {
         const Body* body = bodies[i];
-        glColor3f(randomColors[i].GetX(), randomColors[i].GetY(), 1.0f); // Set random color
+        glColor3f(randomColors[i].GetX(), randomColors[i].GetY(), 1.0f);
         if (body->bodyType == BodyType::Circle)
             DrawCircle(body);
         else if (body->bodyType == BodyType::Box)
@@ -225,20 +222,17 @@ void Render() {
     glfwSwapBuffers(window);
 }
 
-int main()
-{
+int main() {
     if (!Init()) return -1;
 
     GenerateCircles();
     GenerateBoxes();
 
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         ProcessInput();
         ResolveCollisions();
         ResolveRotation();
         Render();
-
         glfwPollEvents();
     }
 

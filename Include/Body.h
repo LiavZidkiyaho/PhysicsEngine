@@ -1,7 +1,7 @@
 #ifndef BODY_H
 #define BODY_H
 #include "Vector2.h"
-#include <Vector>
+#include <vector>
 
 enum BodyType { Circle, Box };
 
